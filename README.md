@@ -28,7 +28,7 @@ stores the pet owner's information
 3. `care_records`
     - id
     - pet_id
-    - record_type
+    - care_record_type_id
     - record_date
     - title
     - description
@@ -38,19 +38,32 @@ stores the pet owner's information
     - id
     - pet_id
     - reminder_title
-    - reminder_type
+    - reminder_type_id
     - due_date
     - is_completed
 5. `food_logs`
     - id
     - pet_id
-    - food_brand
-    - food_name
+    - food_id
     - bag_size
     - start_date
     - end_date
     - notes
 
+### Other Tables
+1. `reminder_types` 
+    - id
+    - type_name
+2. `care_record_types`
+    - id
+    - type_name
+3. `foods` to help standardize the DB, so food could be a dropdown
+    - id
+    - food_brand
+    - food_name
+    - food_type
+    - species
+    
     ---
 
     ![High fidelity Wireframes](images/HFWF.png)
