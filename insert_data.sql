@@ -77,6 +77,46 @@ VALUES
     NULL
 );
 
+-- Insert sample appointments
+INSERT INTO appointments
+( pet_id, appointment_title, appointment_date, provider_name, location, notes, status)
+VALUES
+(
+    1,
+    'Annual Wellness Exam',
+    '2026-08-15 10:00:00',
+    'Bellevue Pet Care Clinic',
+    'Bellevue, WA',
+    'Yearly exam and weight check.',
+    'Scheduled'
+),
+(
+    2,
+    'Kitten Follow-Up Visit',
+    '2026-07-10 14:30:00',
+    'Evergreen Animal Hospital',
+    'Seattle, WA',
+    'Monitor growth and vaccinations.',
+    'Scheduled'
+),
+(
+    3,
+    'Dental Cleaning',
+    '2026-06-20 09:00:00',
+    'Happy Paws Vet',
+    'Redmond, WA',
+    'Routine dental cleaning.',
+    'Scheduled'
+),
+(
+    4,
+    'Neuter Follow-Up',
+    '2022-12-05 11:00:00',
+    'Cascade Pet Clinic',
+    'Bellevue, WA',
+    'Post-surgery checkup.',
+    'Completed'
+);
 
 -- Insert sample reminders
 INSERT INTO reminders
