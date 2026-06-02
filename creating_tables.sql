@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS food_logs;
 DROP TABLE IF EXISTS reminders;
 DROP TABLE IF EXISTS care_records;
+DROP TABLE IF EXISTS appointments;
 DROP TABLE IF EXISTS pets;
 DROP TABLE IF EXISTS owners;
 
@@ -108,6 +109,26 @@ CREATE TABLE reminders (
     CONSTRAINT fk_reminder_type
         FOREIGN KEY (reminder_type_id)
         REFERENCES reminder_types(reminder_type_id)
+);
+
+-- -----------------------------------------------------
+-- Table appointments
+-- -----------------------------------------------------
+CREATE TABLE appointments (
+    appointment_id SERIAL PRIMARY KEY,
+    pet_id INT NOT NULL,
+    appointment_title TEXT NOT NULL,
+    appointment_date TIMESTAMP NOT NULL CHECK (appointment_date > '2000-01-01'),
+    provider_name TEXT,
+    location TEXT,
+    notes TEXT,
+    status TEXT DEFAULT 'Scheduled' NOT NULL
+        CHECK (status IN ('Scheduled', 'Completed', 'Canceled')),
+
+    CONSTRAINT fk_pet_appointment
+        FOREIGN KEY (pet_id)
+        REFERENCES pets(pet_id)
+        ON DELETE CASCADE
 );
 
 -- -----------------------------------------------------

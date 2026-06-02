@@ -49,6 +49,15 @@ stores the pet owner's information
     - start_date
     - end_date
     - notes
+6. `appointments`
+    - appointment_id
+    - pet_id
+    - appointment_title
+    - appointment_date
+    - provider_name
+    - location
+    - notes
+    - status
 
 ### Other Tables
 1. `reminder_types` 
