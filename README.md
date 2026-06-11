@@ -4,10 +4,14 @@
 *AD350 - Database Technology*
 
 ### Overview
-Create the database schema and backend for the PawPrint app designed in AD351.
+This project is divided into two parts - first is the database schema and backend for the PawPrint app designed in AD351, the second is a React Native / Expo application connected to the PawPrint PostgreSQL database hosted in Supabase
 
+Currently, this application serves as the front-end for the PawPrint database project. Users can create owner accounts, log in using their email address, and access a personalized dashboard.
+
+#### The Goal
 PawPrint helps pet owners manage their pets care in one place. Users can add pets, view services, schedule appointments, and track basic pet care records. 
 
+## Database Schema
 ### Core Tables
 1. `Owners`
 stores the pet owner's information
@@ -73,6 +77,35 @@ stores the pet owner's information
     - food_type
     - species
     
-    ---
+    
+## Expo App
+### Current Features
+- Create a new owner account
+- Store owner information in Supabase
+- Look up existing owners by email
+- navigate to a dashboard after login
+- Connect directly to the PawPrint database
+### Technologies Used
+- Expo
+- React Native
+- TypeScript
+- Expo Router
+- Supabase
+- PostgreSQL
+---
+### Setup
+1.  Install Dependencies
+`npm install`
+2. Create Environment Variables
+    Create a `.env` file in the project root:
+    ```
+    EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
+    EXPO_PUBLIC_SUPABASE_KEY=your_supabase_publishable_key
+    ```
+    The `.env` file is not committed to source control and must be created locally before running the application.
 
-    ![High fidelity Wireframes](images/HFWF.png)
+3. Start the Application
+`npx expo start`
+
+#### Wireframes
+  ![High fidelity Wireframes](images/HFWF.png)

@@ -1,0 +1,8 @@
+Dominant - #f6f9fc
+Brand - #336b87
+Accent - #f64f59
+Accent Contrast - #0a2838
+Input Field - #336b87 at 10%
+Info Tiles - #0a2838 at 10%
+Banner - #f64f59 at 15%
+Menu Dropdown- #f6f9fc at 50%
