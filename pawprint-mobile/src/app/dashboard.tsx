@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocalSearchParams, router } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { supabase } from "@/lib/supabase";
-import { globalStyles } from "@/styles/global";
 import { colors } from "@/styles/colors";
 import PawPrintBanner from "@/components/PawPrintBanner";
-
+import MenuDropdown from "@/components/MenuDropdown";
 
 type DashboardStats = {
   owner_id: number;
@@ -24,6 +23,7 @@ export default function DashboardScreen() {
 
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [message, setMessage] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     async function getDashboardStats() {
@@ -47,11 +47,43 @@ export default function DashboardScreen() {
   }, [ownerId]);
 
   return (
-
     <View style={styles.screen}>
-      <PawPrintBanner showMenu />
+      <PawPrintBanner
+        showMenu
+        ownerId={ownerId}
+        firstName={firstName}
+        onMenuPress={() => setMenuOpen((current) => !current)}
+      />
 
-      {/* dashboard content */}
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.title}>Welcome, {firstName}</Text>
+        <Text style={styles.subtitle}>PawPrint Dashboard</Text>
+
+        {message ? <Text style={styles.message}>{message}</Text> : null}
+
+        {stats ? (
+          <View style={styles.card}>
+            <Text style={styles.cardText}>Pets: {stats.total_pets}</Text>
+            <Text style={styles.cardText}>
+              Upcoming Reminders: {stats.upcoming_reminders}
+            </Text>
+            <Text style={styles.cardText}>
+              Overdue Reminders: {stats.overdue_reminders}
+            </Text>
+            <Text style={styles.cardText}>
+              Upcoming Appointments: {stats.upcoming_appointments}
+            </Text>
+            <Text style={styles.cardText}>
+              Current Foods: {stats.current_foods}
+            </Text>
+          </View>
+        ) : null}
+      </ScrollView>
+
+      <MenuDropdown
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      />
     </View>
   );
 }
@@ -61,14 +93,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-
   content: {
     padding: 24,
   },
-
-  backIcon: {
-    fontSize: 42,
+  title: {
+    fontSize: 30,
+    fontWeight: "800",
     color: colors.brand,
-    fontWeight: "700",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: colors.accentContrast,
+    marginBottom: 20,
+  },
+  message: {
+    color: colors.accent,
+    marginBottom: 12,
+    textAlign: "center",
+  },
+  card: {
+    backgroundColor: "rgba(10, 40, 56, 0.10)",
+    borderRadius: 18,
+    padding: 18,
+    gap: 8,
+  },
+  cardText: {
+    fontSize: 16,
+    color: colors.accentContrast,
+    fontWeight: "600",
   },
 });

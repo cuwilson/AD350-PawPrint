@@ -1,133 +1,137 @@
 import { StyleSheet } from "react-native";
 import { colors } from "./colors";
+import { sizes } from "./sizes";
+
 
 export const globalStyles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        backgroundColor: colors.background,
-        padding: 24,
-    },
+  screen: {
+    flex: 1,
+    backgroundColor: colors.background,
+    padding: sizes.screenPadding,
+  },
 
-    centeredScreen: {
-        flex: 1,
-        backgroundColor: colors.background,
-        padding: 24,
-        justifyContent: "center",
-    },
+  centeredScreen: {
+    flex: 1,
+    backgroundColor: colors.background,
+    padding: sizes.screenPadding,
+    justifyContent: "center",
+  },
 
-    title: {
-        fontSize: 32,
-        fontWeight: "800",
-        color: colors.brand,
-        textAlign: "center",
-    },
+  title: {
+    fontSize: sizes.title,
+    fontWeight: "800",
+    color: colors.brand,
+    textAlign: "center",
+  },
 
-    subtitle: {
-        fontSize: 16,
-        color: colors.text,
-        textAlign: "center",
-    },
+  subtitle: {
+    fontSize: sizes.subtitle,
+    color: colors.accentContrast,
+    textAlign: "center",
+  },
 
-    input: {
-        backgroundColor: colors.inputBackground,
-        borderRadius: 4,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        fontSize: 16,
-    },
+  input: {
+    backgroundColor: colors.inputBackground,
+    borderRadius: sizes.borderRadius,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: sizes.body,
+  },
 
-    accentButton: {
-        backgroundColor: colors.accent,
-        height: 64,
-        borderRadius: 4,
-        alignItems: "center",
-        justifyContent: "center",
-    },
+  accentButton: {
+    backgroundColor: colors.accent,
+    height: sizes.buttonHeight,
+    borderRadius: sizes.borderRadius,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-    card: {
-        backgroundColor: colors.tileBackground,
-        borderRadius: 22,
-        padding: 24,
-        gap: 14,
-    },
+  card: {
+    backgroundColor: colors.tileBackground,
+    borderRadius: sizes.cardRadius,
+    padding: sizes.screenPadding,
+    gap: 14,
+  },
 
-    message: {
-        color: colors.text,
-        textAlign: "center",
-        marginTop: 12,
-    },
+  message: {
+    color: colors.accentContrast,
+    textAlign: "center",
+    marginTop: 12,
+  },
 
-    backButton: {
-        marginTop: 20,
-        alignItems: "center",
-    },
-    loginInput: {
-        width: "100%",
-        maxWidth: 379,
-        height: 64,
-        backgroundColor: colors.inputBackground,
-        borderRadius: 4,
-        paddingHorizontal: 16,
-        fontSize: 16,
+  backButton: {
+    marginTop: 20,
+    alignItems: "center",
+  },
 
-        shadowColor: "#9c7f85",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
-    },
+  loginInput: {
+    width: "100%",
+    maxWidth: 379,
+    height: sizes.buttonHeight,
+    backgroundColor: colors.inputBackground,
+    borderRadius: sizes.borderRadius,
+    paddingHorizontal: 16,
+    fontSize: sizes.body,
 
-    smallButton: {
-        width: 160,
-        height: 32,
-        backgroundColor: colors.brand,
-        borderRadius: 4,
-        alignItems: "center",
-        justifyContent: "center",
+    shadowColor: "#9c7f85",
+    shadowOffset: {
+      width: 0,
+      height: 4,
     },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
 
-    smallButtonText: {
-        color: colors.white,
-        fontSize: 16,
-        fontWeight: "400",
-    },
+  smallButton: {
+    width: 160,
+    height: sizes.buttonSmallHeight,
+    backgroundColor: colors.brand,
+    borderRadius: sizes.borderRadius,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-    bigButton: {
-        width: "100%",
-        maxWidth: 344,
-        height: 64,
-        backgroundColor: colors.brand,
-        borderRadius: 4,
-        alignItems: "center",
-        justifyContent: "center",
-    },
+  smallButtonText: {
+    color: colors.white,
+    fontSize: sizes.body,
+    fontWeight: "400",
+  },
 
-    bigButtonText: {
-        color: colors.white,
-        fontSize: 32,
-        fontWeight: "700",
-    },
-    banner: {
-        height: 120,
-        width: "100%",
-        backgroundColor: colors.bannerBackground,
-        alignItems: "center",
-        justifyContent: "flex-end",
-        paddingBottom: 14,
-    },
+  bigButton: {
+    width: "100%",
+    maxWidth: 344,
+    height: sizes.buttonHeight,
+    backgroundColor: colors.brand,
+    borderRadius: sizes.borderRadius,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-    bannerLogo: {
-        width: 69,
-        height: 61,
-        resizeMode: "contain",
-    },
+  bigButtonText: {
+    color: colors.white,
+    fontSize: sizes.title,
+    fontWeight: "700",
+  },
 
-    bannerBackButton: {
-        position: "absolute",
-        left: 32,
-        bottom: 25,
-    },
+  banner: {
+    height: sizes.bannerHeight,
+    width: "100%",
+    backgroundColor: colors.bannerBackground,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    paddingBottom: sizes.bannerPaddingBottom,
+  },
+
+  bannerLogo: {
+    width: sizes.logoWidth,
+    height: sizes.logoHeight,
+    resizeMode: "contain",
+  },
+
+  bannerBackButton: {
+    position: "absolute",
+    left: sizes.iconOffset,
+    bottom: 25,
+  },
 });

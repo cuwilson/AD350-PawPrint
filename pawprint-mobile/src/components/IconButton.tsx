@@ -1,7 +1,8 @@
-import { Image, Pressable, StyleSheet } from "react-native";
+import { Image, ImageSourcePropType, Pressable, StyleSheet } from "react-native";
+import { sizes } from "@/styles/sizes";
 
 type IconButtonProps = {
-  source: any;
+  source: ImageSourcePropType;
   onPress: () => void;
   size?: number;
 };
@@ -9,17 +10,19 @@ type IconButtonProps = {
 export default function IconButton({
   source,
   onPress,
-  size = 32,
+  size = sizes.iconMedium,
 }: IconButtonProps) {
   return (
     <Pressable style={styles.button} onPress={onPress}>
       <Image
         source={source}
-        style={{
-          width: size,
-          height: size,
-          resizeMode: "contain",
-        }}
+        style={[
+          styles.icon,
+          {
+            width: size,
+            height: size,
+          },
+        ]}
       />
     </Pressable>
   );
@@ -27,6 +30,10 @@ export default function IconButton({
 
 const styles = StyleSheet.create({
   button: {
-    padding: 8,
+    padding: sizes.iconPadding,
+  },
+
+  icon: {
+    resizeMode: "contain",
   },
 });

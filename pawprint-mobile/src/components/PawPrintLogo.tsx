@@ -1,11 +1,12 @@
 import { Image, StyleSheet } from "react-native";
+import { sizes } from "@/styles/sizes";
 
 type PawPrintLogoProps = {
   size?: number;
 };
 
 export default function PawPrintLogo({
-  size = 200,
+  size = sizes.logoLarge,
 }: PawPrintLogoProps) {
   return (
     <Image
