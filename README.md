@@ -22,6 +22,7 @@ PawPrint helps pet owners manage their pets care in one place. Users can add pet
 **Dashboard**
 - Personalized welcome banner
 - displays owner-specific pet information (connected to the `owner_dashboard_stats` view)
+- Create new reminders and save them to the database
 
 **Navigation**
 - reusable PawPrint banner component

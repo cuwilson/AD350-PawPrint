@@ -4,7 +4,7 @@ import { router, Link } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { globalStyles } from "@/styles/global";
 import { colors } from "@/styles/colors";
-import PawPrintLogo from "@/components/PawPrintLogo";
+import PawPrintLogo from "@/components/small-elements/PawPrintLogo";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");

@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { router } from "expo-router";
-import PawPrintLogo from "./PawPrintLogo";
-import IconButton from "./IconButton";
+import PawPrintLogo from "./small-elements/PawPrintLogo";
+import IconButton from "./small-elements/IconButton";
 import { colors } from "@/styles/colors";
 import { sizes } from "@/styles/sizes";
 

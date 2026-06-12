@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { Link } from "expo-router";
-import PawPrintLogo from "@/components/PawPrintLogo";
+import PawPrintLogo from "@/components/small-elements/PawPrintLogo";
 import { globalStyles } from "@/styles/global";
 
 
