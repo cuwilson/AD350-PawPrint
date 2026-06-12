@@ -118,3 +118,59 @@ WHERE reminders.is_completed = FALSE;
 -- USAGE
 -- SELECT * FROM upcoming_reminders
 -- WHERE owner_id = 1
+
+-- -----------------------------------------------------
+-- Owner Dashboard Stats
+-- -----------------------------------------------------
+CREATE VIEW owner_dashboard_stats AS
+SELECT
+    owners.owner_id,
+    owners.first_name,
+    owners.last_name,
+
+    COUNT(DISTINCT pets.pet_id) AS total_pets,
+
+    COUNT(DISTINCT reminders.reminder_id)
+        FILTER (
+            WHERE reminders.is_completed = FALSE
+              AND reminders.due_date >= CURRENT_DATE
+        ) AS upcoming_reminders,
+
+    COUNT(DISTINCT reminders.reminder_id)
+        FILTER (
+            WHERE reminders.is_completed = FALSE
+              AND reminders.due_date < CURRENT_DATE
+        ) AS overdue_reminders,
+
+    COUNT(DISTINCT appointments.appointment_id)
+        FILTER (
+            WHERE appointments.status = 'Scheduled'
+              AND appointments.appointment_date >= CURRENT_DATE
+        ) AS upcoming_appointments,
+
+    COUNT(DISTINCT food_logs.food_log_id)
+        FILTER (
+            WHERE food_logs.end_date IS NULL
+        ) AS current_foods,
+
+    MAX(care_records.record_date) AS latest_care_record_date
+
+FROM owners
+LEFT JOIN pets
+    ON owners.owner_id = pets.owner_id
+LEFT JOIN reminders
+    ON pets.pet_id = reminders.pet_id
+LEFT JOIN appointments
+    ON pets.pet_id = appointments.pet_id
+LEFT JOIN food_logs
+    ON pets.pet_id = food_logs.pet_id
+LEFT JOIN care_records
+    ON pets.pet_id = care_records.pet_id
+GROUP BY
+    owners.owner_id,
+    owners.first_name,
+    owners.last_name;
+
+-- USAGE
+-- SELECT * FROM owner_dashboard_stats
+-- WHERE owner_id = 1

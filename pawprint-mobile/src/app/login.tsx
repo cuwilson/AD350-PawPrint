@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { router, Link } from "expo-router";
 import { supabase } from "@/lib/supabase";
+import { globalStyles } from "@/styles/global";
+import { colors } from "@/styles/colors";
+import PawPrintLogo from "@/components/PawPrintLogo";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
@@ -15,38 +18,47 @@ export default function LoginScreen() {
             .single();
 
         if (error) {
-  setMessage("No account found with that email.");
-  return;
-}
+            setMessage("No account found with that email.");
+            return;
+        }
 
-router.push({
-  pathname: "/dashboard",
-  params: {
-    ownerId: data.owner_id,
-    firstName: data.first_name,
-  },
-});
+        router.push({
+            pathname: "/dashboard",
+            params: {
+                ownerId: data.owner_id,
+                firstName: data.first_name,
+            },
+        });
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Returning User</Text>
-
-            <Text style={styles.label}>Email</Text>
+            <View style={styles.logoBox}>
+                <PawPrintLogo size={263} />
+            </View>
 
             <TextInput
-                placeholder="Enter your email"
-                style={styles.input}
+                placeholder="Email"
+                style={globalStyles.loginInput}
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
             />
-            <Pressable style={styles.button} onPress={findOwner}>
-                <Text style={styles.buttonText}>Find My Account</Text>
+
+            <TextInput
+                placeholder="Password"
+                style={globalStyles.loginInput}
+                secureTextEntry
+            />
+
+            <Pressable style={globalStyles.smallButton}>
+                <Text style={globalStyles.smallButtonText}>Forgot Password?</Text>
             </Pressable>
 
-            {message ? <Text style={styles.message}>{message}</Text> : null}
+            <Pressable style={globalStyles.bigButton} onPress={findOwner}>
+                <Text style={globalStyles.bigButtonText}>Login</Text>
+            </Pressable>
             <Link href="/" asChild>
-                <Pressable style={styles.backButton}>
+                <Pressable style={globalStyles.backButton}>
                     <Text>← Back</Text>
                 </Pressable>
             </Link>
@@ -57,46 +69,20 @@ router.push({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f6f9fc",
-        padding: 24,
+        backgroundColor: colors.background,
+        paddingHorizontal: 12,
+        alignItems: "center",
         justifyContent: "center",
+        gap: 18,
     },
-    title: {
-        fontSize: 32,
-        fontWeight: "700",
-        color: "#336b87",
-        marginBottom: 24,
-        textAlign: "center",
-    },
-    label: {
-        fontSize: 16,
-        color: "#0a2838",
-        marginBottom: 8,
-    },
-    input: {
-        backgroundColor: "rgba(51,107,135,0.1)",
-        borderRadius: 12,
-        padding: 14,
-        fontSize: 16,
-    },
-    backButton: {
-        marginTop: 20,
+
+    logoBox: {
+        width: 263,
+        height: 263,
         alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 32,
     },
-    button: {
-        backgroundColor: "#336b87",
-        padding: 14,
-        borderRadius: 14,
-        alignItems: "center",
-        marginTop: 8,
-    },
-    buttonText: {
-        color: "#f6f9fc",
-        fontWeight: "800",
-    },
-    message: {
-        textAlign: "center",
-        color: "#0a2838",
-        marginTop: 12,
-    },
+
+
 });
