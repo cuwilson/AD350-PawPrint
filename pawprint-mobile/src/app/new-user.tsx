@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { Link } from "expo-router";
+import PawPrintLogo from "@/components/PawPrintLogo";
+import { globalStyles } from "@/styles/global";
 
 
 export default function NewUserScreen() {
@@ -35,7 +37,7 @@ export default function NewUserScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Create Account</Text>
-
+            <PawPrintLogo size={150} />
             <TextInput placeholder="First Name" style={styles.input} value={firstName} onChangeText={setFirstName} />
             <TextInput placeholder="Last Name" style={styles.input} value={lastName} onChangeText={setLastName} />
             <TextInput placeholder="Email" style={styles.input} value={email} onChangeText={setEmail} autoCapitalize="none" />
@@ -47,7 +49,7 @@ export default function NewUserScreen() {
 
             {message ? <Text style={styles.message}>{message}</Text> : null}
             <Link href="/" asChild>
-                <Pressable style={styles.backButton}>
+                <Pressable style={globalStyles.backButton}>
                     <Text>← Back</Text>
                 </Pressable>
             </Link>

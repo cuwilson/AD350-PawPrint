@@ -24,9 +24,7 @@ export default function HomeScreen() {
         Track pets, reminders, appointments, and care records.
       </Text>
 
-      <View style={styles.banner}>
-        <Text style={styles.bannerText}>Week 4: Supabase Connection</Text>
-      </View>
+
 
       <View style={styles.card}>
         <Text style={styles.cardText}>

@@ -106,3 +106,11 @@ JOIN current_owner
     ON pets.owner_id = current_owner.owner_id
 WHERE food_logs.end_date IS NULL
 ORDER BY pets.name;
+
+-- View dashboard stats for current owner
+WITH current_owner AS (
+    SELECT 1 AS owner_id
+)
+SELECT *
+FROM owner_dashboard_stats
+WHERE owner_id = (SELECT owner_id FROM current_owner);
