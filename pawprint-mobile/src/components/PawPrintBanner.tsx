@@ -1,55 +1,67 @@
-import { View, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { router } from "expo-router";
 import PawPrintLogo from "./PawPrintLogo";
 import IconButton from "./IconButton";
 import { colors } from "@/styles/colors";
+import { sizes } from "@/styles/sizes";
 
-const backIcon = require("@/assets/images/back-button.png");
 const menuIcon = require("@/assets/images/menu.png");
 
 type PawPrintBannerProps = {
-  showBack?: boolean;
   showMenu?: boolean;
+  onMenuPress?: () => void;
+  ownerId?: string | string[];
+  firstName?: string | string[];
 };
 
 export default function PawPrintBanner({
-  showBack = false,
-  showMenu = false,
+  showMenu = true,
+  onMenuPress,
+  ownerId,
+  firstName,
 }: PawPrintBannerProps) {
+  function goToDashboard() {
+    router.push({
+      pathname: "/dashboard",
+      params: {
+        ownerId,
+        firstName,
+      },
+    });
+  }
+
   return (
     <View style={styles.banner}>
       {showMenu ? (
         <View style={styles.leftIcon}>
           <IconButton
             source={menuIcon}
-            onPress={() => console.log("Menu pressed")}
-            size={32}
+            onPress={onMenuPress ?? (() => {})}
+            size={sizes.iconMedium}
           />
         </View>
       ) : null}
 
-      <PawPrintLogo size={61} />
+      <Pressable onPress={goToDashboard}>
+        <PawPrintLogo size={sizes.logoMedium} />
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   banner: {
-    height: 120,
+    height: sizes.bannerHeight,
     width: "100%",
     backgroundColor: colors.bannerBackground,
     alignItems: "center",
     justifyContent: "flex-end",
-    paddingBottom: 14,
+    paddingBottom: sizes.bannerPaddingBottom,
   },
+
   leftIcon: {
     position: "absolute",
-    left: 24,
-    bottom: 20,
-  },
-  rightIcon: {
-    position: "absolute",
-    right: 24,
-    bottom: 20,
+    left: sizes.screenPadding,
+    bottom: sizes.bannerIconBottom,
   },
 });
