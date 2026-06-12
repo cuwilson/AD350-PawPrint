@@ -106,4 +106,19 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
   },
+  overlay: {
+    position: "absolute",
+    top: sizes.bannerHeight,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 50,
+
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "rgba(10, 40, 56, 0.35)",
+  },
 });

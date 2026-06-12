@@ -5,32 +5,36 @@ import { supabase } from "@/lib/supabase";
 import { colors } from "@/styles/colors";
 import PawPrintBanner from "@/components/PawPrintBanner";
 import MenuDropdown from "@/components/MenuDropdown";
+import DashboardSection from "@/components/dashboard/DashboardSection";
+import AddEditPanel from "@/components/overlays/AddEditPanel";
+import ReminderForm from "@/components/forms/ReminderForm";
 
-type DashboardStats = {
-  owner_id: number;
-  first_name: string;
-  last_name: string;
-  total_pets: number;
-  upcoming_reminders: number;
-  overdue_reminders: number;
-  upcoming_appointments: number;
-  current_foods: number;
-  latest_care_record_date: string | null;
+
+
+type DashboardItem = {
+  label: string;
 };
 
 export default function DashboardScreen() {
   const { ownerId, firstName } = useLocalSearchParams();
+  const ownerIdValue = Array.isArray(ownerId) ? ownerId[0] : ownerId;
+  const firstNameValue = Array.isArray(firstName) ? firstName[0] : firstName;
+  const ownerIdNumber = ownerIdValue ? Number(ownerIdValue) : null;
 
-  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [message, setMessage] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [appointments, setAppointments] = useState<DashboardItem[]>([]);
+  const [reminders, setReminders] = useState<DashboardItem[]>([]);
+
+  const [activePanel, setActivePanel] = useState<"reminder" | "appointment" | "pet" | null>(null);
 
   useEffect(() => {
     async function getDashboardStats() {
       const { data, error } = await supabase
         .from("owner_dashboard_stats")
         .select("*")
-        .eq("owner_id", ownerId)
+        .eq("owner_id", ownerIdNumber)
         .single();
 
       if (error) {
@@ -38,47 +42,94 @@ export default function DashboardScreen() {
         return;
       }
 
-      setStats(data);
+      const { data: appointmentData } = await supabase
+        .from("upcoming_appointments")
+        .select("pet_name, appointment_title, appointment_date")
+        .eq("owner_id", ownerIdNumber)
+        .order("appointment_date");
+
+      setAppointments(
+        appointmentData?.map((item) => ({
+          label: `${item.pet_name}: ${item.appointment_title}`,
+        })) ?? []
+      );
+
+      const { data: reminderData } = await supabase
+        .from("upcoming_reminders")
+        .select("pet_name, reminder_title, due_date")
+        .eq("owner_id", ownerIdNumber)
+        .order("due_date");
+
+      setReminders(
+        reminderData?.map((item) => ({
+          label: `${item.pet_name}: ${item.reminder_title}`,
+        })) ?? []
+      );
     }
 
-    if (ownerId) {
+    if (ownerIdNumber) {
       getDashboardStats();
     }
-  }, [ownerId]);
+  }, [ownerIdNumber]);
 
   return (
     <View style={styles.screen}>
       <PawPrintBanner
         showMenu
-        ownerId={ownerId}
-        firstName={firstName}
+        ownerId={ownerIdValue}
+        firstName={firstNameValue}
         onMenuPress={() => setMenuOpen((current) => !current)}
       />
 
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Welcome, {firstName}</Text>
+        <Text style={styles.title}>Welcome, {firstNameValue}</Text>
         <Text style={styles.subtitle}>PawPrint Dashboard</Text>
 
         {message ? <Text style={styles.message}>{message}</Text> : null}
 
-        {stats ? (
-          <View style={styles.card}>
-            <Text style={styles.cardText}>Pets: {stats.total_pets}</Text>
-            <Text style={styles.cardText}>
-              Upcoming Reminders: {stats.upcoming_reminders}
-            </Text>
-            <Text style={styles.cardText}>
-              Overdue Reminders: {stats.overdue_reminders}
-            </Text>
-            <Text style={styles.cardText}>
-              Upcoming Appointments: {stats.upcoming_appointments}
-            </Text>
-            <Text style={styles.cardText}>
-              Current Foods: {stats.current_foods}
-            </Text>
-          </View>
-        ) : null}
+        <DashboardSection
+          title="Upcoming Events"
+          items={appointments.map((item) => item.label)}
+          onAddPress={() => setActivePanel("appointment")}
+        />
+
+        <DashboardSection
+          title="Reminders"
+          items={reminders.map((item) => item.label)}
+          onAddPress={() => setActivePanel("reminder")}
+        />
       </ScrollView>
+
+      <AddEditPanel
+        visible={activePanel === "reminder"}
+        title="Add Reminder"
+        onClose={() => setActivePanel(null)}
+      >
+        {ownerIdNumber ? (
+          <ReminderForm
+            ownerId={ownerIdNumber}
+            onSuccess={() => {
+              setActivePanel(null);
+            }}
+          />
+        ) : null}
+      </AddEditPanel>
+
+      <AddEditPanel
+        visible={activePanel === "appointment"}
+        title="Add Appointment"
+        onClose={() => setActivePanel(null)}
+      >
+        <Text>Appointment form will go here.</Text>
+      </AddEditPanel>
+
+      <AddEditPanel
+        visible={activePanel === "pet"}
+        title="Add Pet"
+        onClose={() => setActivePanel(null)}
+      >
+        <Text>Pet form will go here.</Text>
+      </AddEditPanel>
 
       <MenuDropdown
         isOpen={menuOpen}
