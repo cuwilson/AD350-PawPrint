@@ -99,7 +99,7 @@ CREATE TABLE reminders (
     pet_id INT NOT NULL,
     reminder_title TEXT NOT NULL,
     reminder_type_id INT NOT NULL,
-    due_date DATE NOT NULL,
+    due_date DATE NULL,
     is_completed BOOLEAN DEFAULT FALSE NOT NULL,
 
     CONSTRAINT fk_pet_reminder

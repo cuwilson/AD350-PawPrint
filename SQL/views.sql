@@ -101,6 +101,7 @@ JOIN pets
 CREATE VIEW upcoming_reminders AS
 SELECT
     owners.owner_id,
+    reminders.reminder_id,
     pets.pet_id,
     pets.name AS pet_name,
     reminders.reminder_title,
