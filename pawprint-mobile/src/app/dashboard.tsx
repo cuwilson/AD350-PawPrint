@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { colors } from "@/styles/colors";
 import PawPrintBanner from "@/components/PawPrintBanner";
-import MenuDropdown from "@/components/MenuDropdown";
 import DashboardSection from "@/components/dashboard/DashboardSection";
 import AddEditPanel from "@/components/overlays/AddEditPanel";
 import ReminderForm from "@/components/forms/ReminderForm";
@@ -16,6 +15,16 @@ type DashboardItem = {
   date?: string | null;
   label: string;
 };
+
+type Pet = {
+  pet_id: number;
+  name: string;
+  species: string;
+  breed: string | null;
+  photo_url: string | null;
+};
+
+
 
 export default function DashboardScreen() {
   const { ownerId, firstName } = useLocalSearchParams();
@@ -29,6 +38,8 @@ export default function DashboardScreen() {
   const [appointments, setAppointments] = useState<DashboardItem[]>([]);
   const [reminders, setReminders] = useState<DashboardItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<DashboardItem | null>(null);
+
+  const [pets, setPets] = useState<Pet[]>([]);
 
   const [activePanel, setActivePanel] = useState<
     | "reminder"
@@ -84,6 +95,14 @@ export default function DashboardScreen() {
         label: `${item.pet_name}: ${item.reminder_title}`,
       })) ?? []
     );
+
+    const { data: petData } = await supabase
+      .from("pets")
+      .select("pet_id, name, species, breed, photo_url")
+      .eq("owner_id", ownerIdNumber)
+      .order("name");
+
+    setPets(petData ?? []);
   }
 
   useEffect(() => {
@@ -191,6 +210,76 @@ export default function DashboardScreen() {
             renderDashboardItem(item, "reminderDetails")
           )}
         </DashboardSection>
+
+        <Text style={styles.sectionTitle}>My Animals</Text>
+
+        <View style={styles.petGrid}>
+          {pets.map((pet) => (
+            <Pressable
+              key={pet.pet_id}
+              style={styles.petTile}
+              onPress={() => console.log("Open pet", pet.pet_id)}
+            >
+              <View style={styles.photoContainer}>
+                <Image
+                  source={
+                    pet.photo_url
+                      ? { uri: pet.photo_url }
+                      : require("@/assets/images/pet-placeholder.png")
+                  }
+                  style={styles.petPhoto}
+                />
+              </View>
+
+              <View style={styles.petInfo}>
+                <Text style={styles.petName}>{pet.name}</Text>
+
+                <Text style={styles.petDetail}>
+                  • {pet.species}
+                </Text>
+
+                {pet.breed ? (
+                  <Text style={styles.petDetail}>
+                    • {pet.breed}
+                  </Text>
+                ) : null}
+
+                <Text style={styles.petDetail}>
+                  • No alerts
+                </Text>
+              </View>
+            </Pressable>
+          ))}
+
+          <Pressable
+            style={[styles.petTile, styles.addPetTile]}
+            onPress={() => setActivePanel("pet")}
+          >
+            <View style={styles.photoContainer}>
+              <Image
+                source={require("@/assets/images/pet-placeholder.png")}
+                style={styles.petPhoto}
+              />
+            </View>
+
+            <View style={styles.petInfo}>
+              <Text style={styles.addPetName}>Add Pet</Text>
+
+              <Text style={styles.petDetail}>
+                • Create a new profile
+              </Text>
+
+              <Text style={styles.petDetail}>
+                • Upload a photo
+              </Text>
+
+              <Text style={styles.petDetail}>
+                • Add reminders
+              </Text>
+            </View>
+          </Pressable>
+
+        </View>
       </ScrollView>
 
       <AddEditPanel
@@ -263,7 +352,7 @@ export default function DashboardScreen() {
         <Text>Pet form will go here.</Text>
       </AddEditPanel>
 
-      <MenuDropdown isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      
     </View>
   );
 }
@@ -316,13 +405,13 @@ const styles = StyleSheet.create({
   },
 
   itemContent: {
-  flexDirection: "row",
-  alignItems: "center",
-},
+    flexDirection: "row",
+    alignItems: "center",
+  },
 
   itemText: {
-  marginRight: 12,
-},
+    marginRight: 12,
+  },
 
   dashboardItemDate: {
     fontSize: 14,
@@ -369,5 +458,76 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: colors.accentContrast,
     fontWeight: "700",
+  },
+
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: colors.brand,
+    marginBottom: 12,
+  },
+
+  petGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+    marginBottom: 24,
+    justifyContent: "center",
+  },
+  
+  addPetTile: {
+    borderColor: colors.accent,
+    backgroundColor: colors.bannerBackground,
+    color: colors.accentContrast,
+  },
+
+
+  petName: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: colors.brand,
+    marginBottom: 8,
+  },
+  
+  addPetName: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: colors.accentContrast,
+    marginBottom: 8,
+  },
+
+  petDetail: {
+    color: colors.accentContrast,
+  },
+  photoContainer: {
+    width: 140,
+    backgroundColor: colors.tileBackground,
+    borderRightWidth: 4,
+    borderRightColor: colors.brand,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  petPhoto: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+
+  petInfo: {
+    flex: 1,
+    padding: 12,
+    justifyContent: "space-evenly",
+  },
+
+  petTile: {
+    flexDirection: "row",
+    backgroundColor: colors.background,
+    borderWidth: 4,
+    borderColor: colors.brand,
+    borderRadius: 4,
+    overflow: "hidden",
+    marginBottom: 16,
+    minHeight: 180,
   },
 });

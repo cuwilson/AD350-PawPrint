@@ -4,6 +4,8 @@ import PawPrintLogo from "./small-elements/PawPrintLogo";
 import IconButton from "./small-elements/IconButton";
 import { colors } from "@/styles/colors";
 import { sizes } from "@/styles/sizes";
+import { useState } from "react";
+import MenuDropdown from "@/components/overlays/MenuDropdown";
 
 const menuIcon = require("@/assets/images/menu.png");
 
@@ -20,36 +22,53 @@ export default function PawPrintBanner({
   ownerId,
   firstName,
 }: PawPrintBannerProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const ownerIdValue = Array.isArray(ownerId) ? ownerId[0] : ownerId;
+  const firstNameValue = Array.isArray(firstName) ? firstName[0] : firstName;
+
   function goToDashboard() {
     router.push({
       pathname: "/dashboard",
       params: {
-        ownerId,
-        firstName,
+        ownerId: ownerIdValue,
+        firstName: firstNameValue,
       },
     });
   }
 
   return (
-    <View style={styles.banner}>
-      {showMenu ? (
-        <View style={styles.leftIcon}>
-          <IconButton
-            source={menuIcon}
-            onPress={onMenuPress ?? (() => {})}
-            size={sizes.iconMedium}
-          />
-        </View>
-      ) : null}
+    <View style={styles.wrapper}>
+      <View style={styles.banner}>
+        {showMenu ? (
+          <View style={styles.leftIcon}>
+            <IconButton
+              source={menuIcon}
+              onPress={() => setMenuOpen((current) => !current)}
+              size={sizes.iconMedium}
+            />
+          </View>
+        ) : null}
 
-      <Pressable onPress={goToDashboard}>
-        <PawPrintLogo size={sizes.logoMedium} />
-      </Pressable>
+        <Pressable onPress={goToDashboard}>
+          <PawPrintLogo size={sizes.logoMedium} />
+        </Pressable>
+      </View>
+
+      <MenuDropdown
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        ownerId={ownerIdValue}
+        firstName={firstNameValue}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    zIndex: 50,
+  },
+
   banner: {
     height: sizes.bannerHeight,
     width: "100%",

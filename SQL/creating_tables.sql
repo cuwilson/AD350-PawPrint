@@ -33,6 +33,7 @@ CREATE TABLE pets (
     birth_date DATE CHECK (birth_date IS NULL OR birth_date <= CURRENT_DATE), -- allow null or must be in the past
     adoption_date DATE CHECK (adoption_date IS NULL OR adoption_date <= CURRENT_DATE), -- allow null or must be in the past
     weight NUMERIC CHECK (weight IS NULL or weight >= 0),
+    photo_url TEXT,
 
     CONSTRAINT fk_owner
         FOREIGN KEY (owner_id)
@@ -99,7 +100,7 @@ CREATE TABLE reminders (
     pet_id INT NOT NULL,
     reminder_title TEXT NOT NULL,
     reminder_type_id INT NOT NULL,
-    due_date DATE NULL,
+    due_date DATE,
     is_completed BOOLEAN DEFAULT FALSE NOT NULL,
 
     CONSTRAINT fk_pet_reminder
