@@ -8,6 +8,7 @@ import { scale } from "@/styles/sizes";
 
 type ReminderFormProps = {
     ownerId: number;
+    petId?: number;
     onSuccess: () => void;
 };
 
@@ -21,11 +22,17 @@ type ReminderType = {
     type_name: string;
 };
 
-export default function ReminderForm({ ownerId, onSuccess }: ReminderFormProps) {
+export default function ReminderForm({
+    ownerId,
+    petId: defaultPetId,
+    onSuccess,
+}: ReminderFormProps) {
     const [pets, setPets] = useState<Pet[]>([]);
     const [reminderTypes, setReminderTypes] = useState<ReminderType[]>([]);
 
-    const [petId, setPetId] = useState<number | string | null>(null);
+    const [petId, setPetId] = useState<number | string | null>(
+        defaultPetId ?? null
+    );
     const [reminderTypeId, setReminderTypeId] = useState<number | string | null>(null);
     const [title, setTitle] = useState("");
     const [dueDate, setDueDate] = useState("");
@@ -83,16 +90,18 @@ export default function ReminderForm({ ownerId, onSuccess }: ReminderFormProps) 
 
     return (
         <>
-            <FormDropdown
-                label="Pet"
-                selectedValue={petId}
-                placeholder="Choose a pet"
-                options={pets.map((pet) => ({
-                    label: pet.name,
-                    value: pet.pet_id,
-                }))}
-                onValueChange={setPetId}
-            />
+            {!defaultPetId ? (
+                <FormDropdown
+                    label="Pet"
+                    selectedValue={petId}
+                    placeholder="Choose a pet"
+                    options={pets.map((pet) => ({
+                        label: pet.name,
+                        value: pet.pet_id,
+                    }))}
+                    onValueChange={setPetId}
+                />
+            ) : null}
 
             <FormDropdown
                 label="Reminder Type"
