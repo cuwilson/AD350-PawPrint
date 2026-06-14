@@ -26,8 +26,13 @@ PawPrint helps pet owners manage their pets care in one place. Users can add pet
 - open reminder details
 - automatic dashboard refresh after updates
 
+**Animal Management**
+- display owner-specific tiles on the dashboard
+- view all animals page with dedicated pet gallery
+- add pet tile prepared for future pet creation workflow
+
 **Navigation**
-- reusable PawPrint banner component
+- global PawPrint banner component
 - clickable PawPrint logo returns the user to their dashboard
 - menu button opens and closes a dropdown navigation menu
 - "Log Off" option returns user to the login screen
