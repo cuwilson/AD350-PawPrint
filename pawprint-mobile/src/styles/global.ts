@@ -114,6 +114,21 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "700",
   },
 
+  completeButton: {
+    width: 46,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: colors.brand,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  accentButtonText: {
+    color: colors.accentContrast,
+    fontSize: sizes.body,
+    fontWeight: "700",
+  },
+
   banner: {
     height: sizes.bannerHeight,
     width: "100%",

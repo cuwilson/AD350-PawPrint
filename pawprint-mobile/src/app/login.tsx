@@ -8,17 +8,19 @@ import PawPrintLogo from "@/components/small-elements/PawPrintLogo";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
     async function findOwner() {
         const { data, error } = await supabase
             .from("owners")
-            .select("*")
-            .eq("email", email)
+            .select("owner_id, first_name, email, password")
+            .eq("email", email.trim().toLowerCase())
+            .eq("password", password.trim())
             .single();
 
-        if (error) {
-            setMessage("No account found with that email.");
+        if (error || !data) {
+            setMessage("Invalid email or password.");
             return;
         }
 
@@ -29,7 +31,10 @@ export default function LoginScreen() {
                 firstName: data.first_name,
             },
         });
+
+
     }
+
     return (
         <View style={styles.container}>
             <View style={styles.logoBox}>
@@ -47,16 +52,29 @@ export default function LoginScreen() {
             <TextInput
                 placeholder="Password"
                 style={globalStyles.loginInput}
+                value={password}
+                onChangeText={setPassword}
                 secureTextEntry
             />
 
-            <Pressable style={globalStyles.smallButton}>
-                <Text style={globalStyles.smallButtonText}>Forgot Password?</Text>
-            </Pressable>
+            <Link href="/forgot-password" asChild>
+                <Pressable style={globalStyles.smallButton}>
+                    <Text style={globalStyles.smallButtonText}>
+                        Forgot Password?
+                    </Text>
+                </Pressable>
+            </Link>
 
             <Pressable style={globalStyles.bigButton} onPress={findOwner}>
                 <Text style={globalStyles.bigButtonText}>Login</Text>
             </Pressable>
+
+            {message ? (
+                <Text style={globalStyles.message}>
+                    {message}
+                </Text>
+            ) : null}
+
             <Link href="/" asChild>
                 <Pressable style={globalStyles.backButton}>
                     <Text>← Back</Text>
