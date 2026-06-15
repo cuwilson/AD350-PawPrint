@@ -20,13 +20,20 @@ VALUES
 ('Lab Work'),
 ('Other');
 
+-- Insert security questions
+INSERT INTO security_questions (question_text) VALUES
+('What was the name of your first pet?'),
+('What city were you born in?'),
+('What is your favorite animal?'),
+('What was the name of your elementary school?'),
+('What is your favorite food?');
 
 -- Insert sample owners
-INSERT INTO owners (first_name, last_name, email, phone)
+INSERT INTO owners (first_name, last_name, email, password, security_question_id, security_answer, phone)
 VALUES
-('Copper', 'Wilson', 'copper.wilson@email.com', '509-867-5309'),
-('Luna', 'Hawthorn', 'luna.hawthorn@email.com', '555-555-5555'),
-('John', 'Doe', 'john.doe@email.com', '555-222-3333');
+('Copper', 'Wilson', 'copper.wilson@email.com', 'password123', 5, 'Pasta', '509-867-5309'),
+('Luna', 'Hawthorn', 'luna.hawthorn@email.com', 'password456', 2, 'Seattle', '555-555-5555'),
+('John', 'Doe', 'john.doe@email.com', 'password789', 3, 'Dog', '555-222-3333');
 
 -- Insert sample pets
 INSERT INTO pets (owner_id, name, species, breed, birth_date, weight)

@@ -15,8 +15,8 @@ PawPrint helps pet owners manage their pets care in one place. Users can add pet
 ## Expo App
 ### Current Features
 **User Accounts**
-- Create a new owner account
-- Log in using an existing email address
+- Create a new owner account with password validation requring a minimum of 8 characters and at least one number
+- Log in using an existing email address (Passwords are currently stored for demo purposes only)
 - Owner-specific dashboard using Supabase data
 
 **Dashboard**

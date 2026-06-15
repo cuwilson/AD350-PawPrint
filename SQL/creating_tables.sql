@@ -11,6 +11,14 @@ DROP TABLE IF EXISTS reminder_types;
 DROP TABLE IF EXISTS care_record_types;
 
 -- -----------------------------------------------------
+-- Table security_questions
+-- -----------------------------------------------------
+CREATE TABLE security_questions (
+    security_question_id SERIAL PRIMARY KEY,
+    question_text TEXT NOT NULL
+);
+
+-- -----------------------------------------------------
 -- Table owners
 -- -----------------------------------------------------
 CREATE TABLE owners (
@@ -18,7 +26,14 @@ CREATE TABLE owners (
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    security_question_id INT NOT NULL,
+    security_answer TEXT NOT NULL,
     phone TEXT
+
+    CONSTRAINT fk_security_question
+        FOREIGN KEY (security_question_id)
+        REFERENCES security_questions(security_question_id)
 );
 
 -- -----------------------------------------------------
